@@ -3,7 +3,6 @@ const $ = require('cheerio')
 const Sentiment = require('sentiment')
 const url = 'http://www.gutenberg.org/files/1661/1661-h/1661-h.htm'
 
-const got = require('got')
 
 // 2525 unique paragraphs
 

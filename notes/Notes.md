@@ -1,0 +1,1 @@
+I am having difficulty figuring out how to display negative values...also it appears that there is a maximum capacity? I have about 2500 data points, and a bar graph using that many would appear to explode off the page. There must be some sort of way to specify it? And how to visually display stuff? 
