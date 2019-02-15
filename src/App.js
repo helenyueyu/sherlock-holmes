@@ -13,7 +13,7 @@ import { scaleLinear, scaleBand } from '@vx/scale';
 console.log(Math.min(...array))
 const data = array.map((x,idx) => ({
     letter: idx,
-    frequency: x+27
+    frequency: x
   })).slice(0,50)
 console.log(data)
 // const data = letterFrequency;
@@ -40,7 +40,7 @@ const xScale = scaleBand({
 });
 const yScale = scaleLinear({
   rangeRound: [yMax, 0],
-  domain: [0, Math.max(...data.map(y))],
+  domain: [-100, Math.max(...data.map(y))],
 });
 
 // Compose together the scale and accessor functions to get point functions

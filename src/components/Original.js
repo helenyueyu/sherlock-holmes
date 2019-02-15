@@ -1,5 +1,4 @@
 const rp = require('request-promise')
-const $ = require('cheerio')
 const Sentiment = require('sentiment')
 const url = 'http://www.gutenberg.org/files/1661/1661-h/1661-h.htm'
 
@@ -15,9 +14,9 @@ const url = 'http://www.gutenberg.org/files/1661/1661-h/1661-h.htm'
 
 // We have &#8216, &#8217, &#8220, &#8221, &#8212
 
-// function onlyUnique(value, index, self) {
-//   return self.indexOf(value) === index
-// }
+function onlyUnique(value, index, self) {
+  return self.indexOf(value) === index
+}
 
 let sentiment = new Sentiment()
 
@@ -31,9 +30,31 @@ rp(url)
     .replace(/&#8221/g, '"')
     .replace(/;/g, '')
     .replace(/&#8216/g, '')
-    .replace(/&#8217/g, ''))
-    .map(x => sentiment.analyze(x))
-    .map(x => x.score), {'maxArrayLength': null})
+    .replace(/&#8217/g, '')
+    .replace(/&nbsp/g, ' ')
+    .split(' '))
+    .slice(1)
+    .flat()
+    .filter(x => x.length !== 0)
+    .filter(x => !x.includes('<'))
+    .filter(x => !x.includes('>'))
+    .map(x => x.replace('.', ''))
+    .map(x => x.replace('!', ''))
+    .map(x => x.replace('?', ''))
+    .map(x => x.toUpperCase())
+    .map(x => x.split('-'))
+    .flat()
+    .filter(onlyUnique)
+    .filter(x => !x.includes('HTTP'))
+    .filter(x => !x.includes('TRADEMARK'))
+    .filter(x => !x.includes('WWWGUTENBERG'))
+    .filter(x => !x.includes('@'))
+    .map(x => sentiment.analyze(x).score)
+    .filter(x => x > 0)
+    .length
+    )
+    // .map(x => sentiment.analyze(x))
+    // .map(x => x.score), {'maxArrayLength': null})
   })
   .catch(function(err){
 })
